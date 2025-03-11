@@ -1,6 +1,6 @@
 #define BTN_PIN 2
 #include <LCD_I2C.h>
-LCD_I2C lcd(0x27, 16, 2);    // Default address of most PCF8574 modules, change according
+LCD_I2C lcd(0x27, 16, 2);  // Default address of most PCF8574 modules, change according
 int photoresistence = A0;
 int led = 8;
 int button = 2;
@@ -9,10 +9,11 @@ int pinY = A2;
 int valX = 0;
 int valY = 0;
 
-unsigned long previousMillis = 0; 
-const long interval = 5000;       
-bool pharesON = false;         
-int luminosite;                   
+unsigned long previousMillis = 0;
+const long interval = 5000;
+bool pharesON = false;
+int luminosite;
+const int referenceLuminosite = 512;
 
 
 unsigned long currentTime = 0;
@@ -52,6 +53,8 @@ void setup() {
 void loop() {
   currentTime = millis();
 
+
+
   afficherLuminosite();
 
   surveillerLuminosite();
@@ -84,28 +87,33 @@ void afficherLuminosite() {
 
 void surveillerLuminosite() {
   unsigned long currentMillis = millis();
+  luminosite = analogRead(photoresistence);
 
 
-  if (luminosite < 512) {
-    if (currentMillis - previousMillis >= interval) {
-      if (!pharesON) {
+
+  if (luminosite < referenceLuminosite) {
+    if (!pharesON) {
+
+      if (currentMillis - previousMillis >= interval) {
         pharesON = true;
         digitalWrite(led, HIGH);
       }
+    } else {
+
+      previousMillis = currentMillis;
     }
-  } else {
-    previousMillis = currentMillis;
   }
 
+  else {
+    if (pharesON) {
 
-  if (luminosite > 512) {
-    if (currentMillis - previousMillis >= interval) {
-      if (pharesON) {
+      if (currentMillis - previousMillis >= interval) {
         pharesON = false;
         digitalWrite(led, LOW);
       }
+    } else {
+
+      previousMillis = currentMillis;
     }
-  } else {
-    previousMillis = currentMillis;
   }
 }
