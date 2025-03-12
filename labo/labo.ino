@@ -17,9 +17,9 @@ const int referenceLuminosite = 512;
 
 unsigned long currentTime = 0;
 
-int compteur = 0;        
-int etatBouton = 0;      
-int dernierEtatBouton = 0; 
+int compteur = 0;
+int etatBouton = 0;
+int dernierEtatBouton = 0;
 
 uint8_t chiffre[8] = {
   0b11100,
@@ -55,7 +55,7 @@ void setup() {
 
 void loop() {
   currentTime = millis();
-buttonPress();
+  buttonPress();
 }
 
 
@@ -131,10 +131,11 @@ void afficherVitesse() {
   lcd.print(valX);
 
   if (valX >= -9 && valX <= 99) {
-    lcd.print(" "); 
+    lcd.print(" ");
   }
-  if (valX >= -9 && valX <= 9) { 
-    lcd.print(" "); 
+
+  if (valX >= -9 && valX <= 9) {
+    lcd.print(" ");
   }
 
   lcd.setCursor(0, 1);
@@ -168,28 +169,24 @@ void vitesse() {
 
   Serial.println(valX);
 }
-void buttonPress(){
+void buttonPress() {
   etatBouton = digitalRead(button);
 
-   if (etatBouton != dernierEtatBouton) {
-    if (etatBouton == HIGH) { 
-      compteur++; 
+  if (etatBouton != dernierEtatBouton) {
+    if (etatBouton == HIGH) {
+      compteur++;
       lcd.clear();
     }
     dernierEtatBouton = etatBouton;
   }
-  if(compteur % 2 !=0){
-    
+  if (compteur % 2 != 0) {
+
     afficherLuminosite();
     surveillerLuminosite();
-  }
-  else{
- 
+  } else {
+
     afficherVitesse();
     direction();
     vitesse();
   }
-
- 
 }
-
