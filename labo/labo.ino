@@ -15,8 +15,11 @@ bool pharesON = false;
 int luminosite;
 const int referenceLuminosite = 512;
 
-
 unsigned long currentTime = 0;
+
+int compteur = 0;        
+int etatBouton = 0;      
+int dernierEtatBouton = 0; 
 
 uint8_t chiffre[8] = {
   0b11100,
@@ -52,13 +55,11 @@ void setup() {
 
 void loop() {
   currentTime = millis();
-
-
-
-  afficherLuminosite();
-
-  surveillerLuminosite();
+buttonPress();
 }
+
+
+
 
 void start() {
 
@@ -117,3 +118,70 @@ void surveillerLuminosite() {
     }
   }
 }
+
+void afficherVitesse() {
+  lcd.setCursor(0, 0);
+  if (valX >= 0) {
+    lcd.print("Avance : ");
+    lcd.print(valX);
+  } else {
+    lcd.print("Recule : ");
+    lcd.print(valX);
+  }
+
+  lcd.setCursor(0, 1);
+  lcd.print("Direction : ");
+
+  if (valY > 506) {
+    lcd.setCursor(13, 1);
+    lcd.print("D");
+  }
+  if (valY < 506) {
+    lcd.setCursor(13, 1);
+    lcd.print("G");
+  }
+}
+void direction() {
+  valY = analogRead(pinY);
+}
+void vitesse() {
+  valX = analogRead(pinX);
+
+  if (valX < 511) {
+
+    valX = map(valX, 0, 510, -25, 0);
+  } else if (valX > 511) {
+
+    valX = map(valX, 512, 1023, 0, 120);
+  } else {
+
+    valX = 0;
+  }
+
+  Serial.println(valX);
+}
+void buttonPress(){
+  etatBouton = digitalRead(button);
+
+   if (etatBouton != dernierEtatBouton) {
+    if (etatBouton == HIGH) { 
+      compteur++; 
+      lcd.clear();
+    }
+    dernierEtatBouton = etatBouton;
+  }
+  if(compteur % 2 !=0){
+    
+    afficherLuminosite();
+    surveillerLuminosite();
+  }
+  else{
+ 
+    afficherVitesse();
+    direction();
+    vitesse();
+  }
+
+ 
+}
+
