@@ -121,12 +121,20 @@ void surveillerLuminosite() {
 
 void afficherVitesse() {
   lcd.setCursor(0, 0);
+
   if (valX >= 0) {
     lcd.print("Avance : ");
-    lcd.print(valX);
   } else {
     lcd.print("Recule : ");
-    lcd.print(valX);
+  }
+
+  lcd.print(valX);
+
+  if (valX >= -9 && valX <= 99) {
+    lcd.print(" "); 
+  }
+  if (valX >= -9 && valX <= 9) { 
+    lcd.print(" "); 
   }
 
   lcd.setCursor(0, 1);
