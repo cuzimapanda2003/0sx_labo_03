@@ -54,6 +54,7 @@ void setup() {
 void loop() {
   currentTime = millis();
   buttonPress();
+  messageConsole();
 }
 
 
@@ -167,7 +168,6 @@ void vitesse() {
     valX = 0;
   }
 
-  Serial.println(valX);
 }
 void buttonPress() {
   etatBouton = digitalRead(button);
@@ -190,3 +190,21 @@ void buttonPress() {
     vitesse();
   }
 }
+
+void messageConsole() {
+  unsigned long previousMillis = 0;
+  const long interval = 100;
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis >= interval) {
+    previousMillis = currentMillis;
+    Serial.print("etd:2168637,x:");
+    Serial.print(valX);
+    Serial.print(",y:");
+    Serial.print(valY);
+    Serial.print(",sys:");
+    Serial.print(pharesON);
+    Serial.println();
+
+  }
+  }
