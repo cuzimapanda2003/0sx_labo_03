@@ -170,8 +170,6 @@ void vitesse() {
 
     valX = 0;
   }
-
-
 }
 void buttonPress() {
   etatBouton = digitalRead(button);
@@ -194,4 +192,3 @@ void buttonPress() {
     vitesse();
   }
 }
-
