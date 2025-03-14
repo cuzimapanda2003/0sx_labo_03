@@ -9,8 +9,6 @@ int pinY = A2;
 int valX = 0;
 int valY = 0;
 
-unsigned long previousMillis = 0;
-const long interval = 5000;
 bool pharesON = false;
 int luminosite;
 const int referenceLuminosite = 512;
@@ -87,6 +85,8 @@ void afficherLuminosite() {
 }
 
 void surveillerLuminosite() {
+  unsigned long previousMillis = 0;
+  const long interval = 5000;
   unsigned long currentMillis = millis();
   luminosite = analogRead(photoresistence);
 
