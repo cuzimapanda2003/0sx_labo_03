@@ -9,9 +9,17 @@ int pinY = A2;
 int valX = 0;
 int valY = 0;
 
+unsigned long previousMillis = 0;
+const long interval = 5000;
+
+unsigned long previousMillis2 = 0;
+const long interval2 = 100;
+
 bool pharesON = false;
 int luminosite;
 const int referenceLuminosite = 512;
+
+unsigned long currentTime = 0;
 
 int compteur = 0;
 int etatBouton = 0;
@@ -50,9 +58,8 @@ void setup() {
 }
 
 void loop() {
-
+  currentTime = millis();
   buttonPress();
-  messageConsole();
 }
 
 
@@ -84,9 +91,6 @@ void afficherLuminosite() {
 }
 
 void surveillerLuminosite() {
-  unsigned long currentTime = 0;
-  unsigned long previousMillis = 0;
-  const long interval = 5000;
   unsigned long currentMillis = millis();
   luminosite = analogRead(photoresistence);
 
@@ -167,6 +171,7 @@ void vitesse() {
     valX = 0;
   }
 
+
 }
 void buttonPress() {
   etatBouton = digitalRead(button);
@@ -190,20 +195,3 @@ void buttonPress() {
   }
 }
 
-void messageConsole() {
-  unsigned long previousMillis = 0;
-  const long interval = 100;
-  unsigned long currentMillis = millis();
-
-  if (currentMillis - previousMillis >= interval) {
-
-    Serial.print("etd:2168637,x:");
-    Serial.print(valX);
-    Serial.print(",y:");
-    Serial.print(valY);
-    Serial.print(",sys:");
-    Serial.print(pharesON);
-    Serial.println();
-    previousMillis = currentMillis;
-  }
-  }
