@@ -13,8 +13,6 @@ bool pharesON = false;
 int luminosite;
 const int referenceLuminosite = 512;
 
-unsigned long currentTime = 0;
-
 int compteur = 0;
 int etatBouton = 0;
 int dernierEtatBouton = 0;
@@ -52,7 +50,7 @@ void setup() {
 }
 
 void loop() {
-  currentTime = millis();
+
   buttonPress();
   messageConsole();
 }
@@ -86,6 +84,7 @@ void afficherLuminosite() {
 }
 
 void surveillerLuminosite() {
+  unsigned long currentTime = 0;
   unsigned long previousMillis = 0;
   const long interval = 5000;
   unsigned long currentMillis = millis();
@@ -197,7 +196,7 @@ void messageConsole() {
   unsigned long currentMillis = millis();
 
   if (currentMillis - previousMillis >= interval) {
-    previousMillis = currentMillis;
+
     Serial.print("etd:2168637,x:");
     Serial.print(valX);
     Serial.print(",y:");
@@ -205,6 +204,6 @@ void messageConsole() {
     Serial.print(",sys:");
     Serial.print(pharesON);
     Serial.println();
-
+    previousMillis = currentMillis;
   }
   }
